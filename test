@@ -5,3 +5,38 @@ git commit -m "first commit"
 git branch -M main
 git remote add origin https://github.com/Hweeyoon/my-post-server.git
 git push -u origin main
+
+
+const express = require('express');
+const multer  = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+const app = express();
+const PORT = 3000;
+
+// uploads 폴더가 없으면 만들기
+if (!fs.existsSync('uploads')) {
+  fs.mkdirSync('uploads');
+}
+
+// 파일 저장 설정
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');  // 업로드 위치
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);  // 저장 파일 이름
+  }
+});
+const upload = multer({ storage: storage });
+
+// /test 경로로 파일 받기
+app.post('/test', upload.single('photo'), (req, res) => {
+  console.log('파일 정보:', req.file);
+  res.send('업로드 성공');
+});
+
+app.listen(PORT, () => {
+  console.log(`서버 실행 중: http://10.10.50.111:${PORT}`);
+});
