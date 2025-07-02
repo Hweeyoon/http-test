@@ -3,5 +3,5 @@ git init
 git add .
 git commit -m "first commit"
 git branch -M main
-git remote add origin https://github.com/너의계정/my-post-server.git
+git remote add origin https://github.com/Hweeyoon/my-post-server.git
 git push -u origin main
